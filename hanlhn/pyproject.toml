@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "hanlhn"
+version = "0.1.0"
+description = ""
+authors = ["hanahh080601 <hanlehngoc080601@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.78.0"
+pymongo = {extras = ["srv"], version = "^4.1.1"}
+uvicorn = "^0.18.1"
+torch = "^1.11.0"
+joblib = "^1.1.0"
+torchvision = "^0.12.0"
+pandas = "^1.4.3"
+python-multipart = "^0.0.5"
+timm = "^0.5.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
