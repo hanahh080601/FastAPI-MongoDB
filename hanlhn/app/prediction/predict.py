@@ -22,30 +22,26 @@ class Prediction:
                         nn.ReLU(inplace=True),
                         nn.Linear(128, 102))
         self.model.to(device)
-        self.model.load_state_dict(torch.load('flower_classification.pt'))
-        self.device = device
+        self.model.load_state_dict(torch.load('models/flower_classification.pt', map_location = device))
 
-    def preprocess(self, input: File):
-        img = Image.open(input)
+    def preprocess(self, img):
         mean = [0.485, 0.456, 0.406] 
         std = [0.229, 0.224, 0.225]
-        transform_norm = transforms.Compose([transforms.ToTensor(), 
-        transforms.Resize((112,112)),transforms.Normalize(mean, std)])
-            
+        transform_norm = transforms.Compose([
+            transforms.Resize((112,112)),
+            transforms.ToTensor(), 
+            transforms.Normalize(mean, std)
+        ])
         # get normalized image
         img_normalized = transform_norm(img).float()
-        img_normalized = img_normalized.unsqueeze_(0)
-
+        img_normalized = img_normalized.unsqueeze(0)
         return img_normalized
 
-    def predict(self, input: File) -> str:
-
+    def predict(self, input) -> str:
         # process data
         preprocessed_input = self.preprocess(input)
-        # run model
         with torch.no_grad():
             self.model.eval()
-            # run model
             y_pred = self.model(preprocessed_input)
             index = y_pred.data.cpu().numpy().argmax()
             name_pred = eng_name[index]
